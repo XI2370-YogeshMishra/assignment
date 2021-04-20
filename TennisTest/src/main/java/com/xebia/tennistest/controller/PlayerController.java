@@ -28,44 +28,37 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/players")
 public class PlayerController {
 
-	private PlayerRepository playerRepository;
-	@Autowired
-	private GroupRepository groupRepository;
-
 	private PlayerService playerService;
-	@Autowired
 	private LeagueService leagueService;
 
 	@Autowired
-	public PlayerController(PlayerRepository playerRepository, PlayerService playerService) {
-		this.playerRepository = playerRepository;
+	public PlayerController(LeagueService leagueService, PlayerService playerService) {
 		this.playerService = playerService;
+		this.leagueService=leagueService;
 	}
 
 	@GetMapping
 	public Collection<Player> getPlayers() {
 
-		return playerRepository.findAll();
+		return playerService.getAllPlayer();
 	}
 
 	@GetMapping("/{playerId}")
 	public Player player(@PathVariable("playerId") long playerId) {
 
-		return playerRepository.findById(playerId)
-				.orElseThrow(() -> new NotFoundException("Player with id " + playerId + " not found"));
+		return playerService.findById(playerId);
 	}
 
 	@GetMapping("match/{matchId}")
 	public Map<Long, Player> getPlayersByMatchId(@PathVariable("matchId") Long matchId) {
 
-		return playerRepository.findAllByMatchId(matchId).stream().collect(Collectors.toMap(Player::getId, v -> v));
+		return playerService.getAllByMatchId(matchId);
 	}
 
 	@GetMapping("league/{leagueId}")
-	public Map<Long, Player> getPlayersByCompetitionId(@PathVariable("leagueId") Long competitionId) {
+	public Map<Long, Player> getPlayersByCompetitionId(@PathVariable("leagueId") Long leagueId) {
 
-		return playerRepository.findAllByCompetitionId(competitionId).stream()
-				.collect(Collectors.toMap(Player::getId, v -> v));
+		return playerService.getPlayerByLeagueId(leagueId);
 	}
 
 	@PostMapping("/add")
@@ -88,13 +81,15 @@ public class PlayerController {
 		return new ResponseEntity<>(id, responseHeader, HttpStatus.CREATED);
 
 	}
+
 	public List<Long> listIds() {
-		return playerRepository.findAll().stream().map(Player -> Player.getId()).collect(Collectors.toList());
+		return playerService.getAllPlayerIds();
 	}
+
 	@PutMapping("/group/{groupcount}")
-	public void createGroup(@PathVariable("groupcount") int groupcount ) {
+	public void createGroup(@PathVariable("groupcount") int groupcount) {
 		List<Long> listIds = listIds();
-		playerService.createGroup(groupcount,listIds);
+		playerService.createGroup(groupcount, listIds);
 	}
-	
+
 }

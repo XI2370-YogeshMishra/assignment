@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.xebia.tennistest.entity.Match;
 import com.xebia.tennistest.exception.NotFoundException;
 import com.xebia.tennistest.repository.MatchRepository;
+import com.xebia.tennistest.service.MatchService;
 import com.xebia.tennistest.service.ResultRegistrationService;
 import com.xebia.tennistest.util.BracketPosition;
 import com.xebia.tennistest.validaion.ResultRegistrationForm;
@@ -22,27 +23,25 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/matches")
 public class MatchController {
 
-	MatchRepository matchRepository;
+	MatchService matchService;
 
 	ResultRegistrationService resultRegistrationService;
 
 	@Autowired
-	public MatchController(MatchRepository matchRepository, ResultRegistrationService resultRegistrationService) {
-		this.matchRepository = matchRepository;
+	public MatchController(MatchService matchService, ResultRegistrationService resultRegistrationService) {
+		this.matchService = matchService;
 		this.resultRegistrationService = resultRegistrationService;
 	}
 
 	@GetMapping
 	public Collection<Match> getMatches() {
 
-		return matchRepository.findAll();
+		return matchService.getAllMatches();
 	}
 
 	@GetMapping("/{matchId}")
 	public Match match(@PathVariable("matchId") Long matchId) {
-
-		return matchRepository.findById(matchId)
-				.orElseThrow(() -> new NotFoundException("Match with id " + matchId + " not found"));
+		return matchService.findById(matchId);
 	}
 
 	@PostMapping("/edit/{matchId}")
@@ -53,9 +52,10 @@ public class MatchController {
 		HttpHeaders responseHeader = new HttpHeaders();
 		return new ResponseEntity<>(id, responseHeader, HttpStatus.OK);
 	}
+
 	@PutMapping("/close/{matchId}")
 	public void closeMatch(@PathVariable("matchId") Long matchId) {
-		matchRepository.closeMatch(matchId);
+		matchService.closeMatch(matchId);
 
 	}
 }

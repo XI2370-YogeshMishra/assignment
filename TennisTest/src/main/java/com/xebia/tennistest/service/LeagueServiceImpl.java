@@ -1,6 +1,7 @@
 package com.xebia.tennistest.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,11 @@ public class LeagueServiceImpl implements LeagueService {
 	public Long setWinner(long winningPlayerId) {
 		long id=leagueRepository.setWinner(winningPlayerId);
 		return null;
+	}
+
+	@Override
+	public Collection<League> getAllLeague() {
+		return  leagueRepository.findAll();
 	}
 
 

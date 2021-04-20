@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xebia.tennistest.entity.League;
 import com.xebia.tennistest.entity.LeagueForm;
-import com.xebia.tennistest.repository.LeagueRepository;
 import com.xebia.tennistest.service.EmailService;
 import com.xebia.tennistest.service.LeagueService;
 
@@ -27,20 +26,18 @@ import com.xebia.tennistest.service.LeagueService;
 public class LeagueController {
 	@Autowired
 	private EmailService emailService;
-	private LeagueRepository leagueRepository;
 
 	private LeagueService leagueService;
 
 	@Autowired
-	public LeagueController(LeagueRepository leagueRepository, LeagueService leagueService) {
-		this.leagueRepository = leagueRepository;
+	public LeagueController(LeagueService leagueService) {
 		this.leagueService = leagueService;
 	}
 
 	@GetMapping
 	public Collection<League> getCompetitions() {
-		return leagueRepository.findAll();
-
+		// return leagueRepository.findAll();
+		return leagueService.getAllLeague();
 	}
 
 	@PostMapping("/add")
