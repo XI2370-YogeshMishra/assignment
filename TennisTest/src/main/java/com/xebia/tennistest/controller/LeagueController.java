@@ -52,7 +52,7 @@ public class LeagueController {
 
 	@PutMapping("/{winningPlayerId}")
 	public void setWinner(@PathVariable("winningPlayerId") long winningPlayerId) {
-		Long id = leagueService.serWinner(winningPlayerId);
+		Long id = leagueService.setWinner(winningPlayerId);
 		emailService.sendMail("winner@gmail.com", "Winner", "You won the championShip");
 	}
 

@@ -4,5 +4,5 @@ import com.xebia.tennistest.entity.LeagueForm;
 
 public interface LeagueService {
 	 Long createCompetition(LeagueForm leagueForm);
-	 Long serWinner(long winningplayerid);
+	 Long setWinner(long winningplayerid);
 }

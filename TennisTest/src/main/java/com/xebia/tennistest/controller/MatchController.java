@@ -53,5 +53,9 @@ public class MatchController {
 		HttpHeaders responseHeader = new HttpHeaders();
 		return new ResponseEntity<>(id, responseHeader, HttpStatus.OK);
 	}
+	@PutMapping("/close/{matchId}")
+	public void closeMatch(@PathVariable("matchId") Long matchId) {
+		matchRepository.closeMatch(matchId);
 
+	}
 }

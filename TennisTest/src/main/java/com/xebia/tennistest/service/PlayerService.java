@@ -1,10 +1,12 @@
 package com.xebia.tennistest.service;
 
-import com.xebia.tennistest.entity.PlayerForm;
+import java.util.List;
 
-;
+import com.xebia.tennistest.entity.PlayerForm;
 
 public interface PlayerService {
 
-    Long addPlayer(PlayerForm playerForm);
+	Long addPlayer(PlayerForm playerForm);
+
+	void createGroup(int groupcount, List<Long> listIds);
 }

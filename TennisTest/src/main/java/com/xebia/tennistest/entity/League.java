@@ -11,23 +11,15 @@ public class League {
 	@Id
     @GeneratedValue
     private Long id;
-
     private String name;
-
     private Integer numberOfPlayers;
-
     private Integer numberOfRounds;
-
     private Integer numberOfMatchesInFirstRound;
-
     @Embedded
     private VictoryConditions victoryConditions;
-
     private Long winningPlayerId;
-
     public League() {
     }
-
     public League(String name, Integer numberOfPlayers, Integer numberOfWinsRequired, Integer numberOfPointsToWin) {
 
         this.name = name;

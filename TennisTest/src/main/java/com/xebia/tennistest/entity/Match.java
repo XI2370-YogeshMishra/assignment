@@ -31,11 +31,9 @@ public class Match {
 
     @Column(updatable = false)
     private Long competitionId;
-
     private Long player1Id;
-
     private Long player2Id;
-
+    private boolean matchclosestatus;
     @OneToMany(cascade = CascadeType.ALL)
     private Collection<Game> games;
 
@@ -100,8 +98,18 @@ public class Match {
     public MatchWinner getMatchWinner() {
         return matchWinner;
     }
+    
 
-    public Optional<Long> getWinningPlayerId() {
+
+	public boolean isMatchclosestatus() {
+		return matchclosestatus;
+	}
+
+	public void setMatchclosestatus(boolean matchclosestatus) {
+		this.matchclosestatus = matchclosestatus;
+	}
+
+	public Optional<Long> getWinningPlayerId() {
         if(matchWinner == MatchWinner.PLAYER1) {
             return Optional.ofNullable(player1Id);
         } else if (matchWinner == MatchWinner.PLAYER2) {
@@ -112,7 +120,10 @@ public class Match {
     }
 
     public MatchStatus getStatus() {
-        if(resultRegistrationTime != null) {
+    	if(matchclosestatus==true) {
+    		return  MatchStatus.CLOSE;
+    	}
+    	else if(resultRegistrationTime != null) {
             return MatchStatus.CONCLUDED;
         } else if (player1Id != null && player2Id != null) {
             return MatchStatus.READY;

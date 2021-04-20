@@ -70,7 +70,7 @@ public class LeagueServiceImpl implements LeagueService {
 	}
 
 	@Override
-	public Long serWinner(long winningPlayerId) {
+	public Long setWinner(long winningPlayerId) {
 		long id=leagueRepository.setWinner(winningPlayerId);
 		return null;
 	}
